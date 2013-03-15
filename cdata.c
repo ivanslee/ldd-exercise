@@ -33,19 +33,26 @@
 #include <asm/io.h>
 #include <asm/uaccess.h>
 
+#define MSG(m...) printk(KERN_INFO "CDATA:" m "\n")
+#define DEV_MAJOR  121
+#define DEV_NAME   "cdata"
+
 static int cdata_open(struct inode *inode, struct file *filp)
 {
+	MSG("Opened.");
 	return 0;
 }
 
 ssize_t cdata_write(struct file *filp, const char *buf, size_t size, 
                       loff_t *off)
 {
+	MSG("Writed.");
 	return 0;
 }
 
 int cdata_close(struct inode *inode, struct file *filp)
 {
+	MSG("Closed.");
 	return 0;
 }
 
@@ -57,8 +64,8 @@ static struct file_operations cdata_fops = {
 
 int cdata_init_module(void)
 {
-	if(register_chrdev(121, "cdata", &cdata_fops) < 0){
-		printk(KERN_INFO "CDATA: can't register driver\n");
+	if(register_chrdev(DEV_MAJOR, DEV_NAME, &cdata_fops) < 0){
+		MSG("Can't register device.");
 		return -1;
 	}
 	return 0;
@@ -66,7 +73,7 @@ int cdata_init_module(void)
 
 void cdata_cleanup_module(void)
 {
-	unregister_chrdev(121, "cdata");
+	unregister_chrdev(DEV_MAJOR, DEV_NAME);
 }
 
 module_init(cdata_init_module);
