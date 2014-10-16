@@ -68,12 +68,20 @@ int cdata_close(struct inode *inode, struct file *filp)
 	return 0;
 }
 
+int cdata_flush(struct file *filp)
+{
+	MSG("Flushed.");
+	return 0;
+}
+
+
 static struct file_operations cdata_fops = {
 	owner:		THIS_MODULE,
 	open:		cdata_open,
 	release:	cdata_close,
 	write:		cdata_write,
 	read:		cdata_read,
+	flush:		cdata_flush,
 };
 
 int cdata_init_module(void)
