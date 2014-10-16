@@ -36,11 +36,15 @@
 #define MSG(m...) printk(KERN_INFO "CDATA:" m "\n")
 #define DEV_MAJOR  121
 #define DEV_NAME   "cdata"
-#define Aurthor "navilee"
 
 static int cdata_open(struct inode *inode, struct file *filp)
 {
+	int minor;
+	
 	MSG("Opened.");
+	minor = MINOR(inode->i_rdev);
+	printk(KERN_INFO "CDATA: minor=%d\n", minor);
+
 	return 0;
 }
 
@@ -57,7 +61,7 @@ ssize_t cdata_read(struct file *filp, char *buf, size_t size,
 	MSG("Read.");
 	return 0;
 }
-
+	
 int cdata_close(struct inode *inode, struct file *filp)
 {
 	MSG("Closed.");
@@ -65,6 +69,7 @@ int cdata_close(struct inode *inode, struct file *filp)
 }
 
 static struct file_operations cdata_fops = {
+	owner:		THIS_MODULE,
 	open:		cdata_open,
 	release:	cdata_close,
 	write:		cdata_write,
