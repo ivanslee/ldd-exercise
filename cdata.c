@@ -36,6 +36,7 @@
 #define MSG(m...) printk(KERN_INFO "CDATA:" m "\n")
 #define DEV_MAJOR  121
 #define DEV_NAME   "cdata"
+#define Aurthor "navilee"
 
 static int cdata_open(struct inode *inode, struct file *filp)
 {
@@ -50,6 +51,13 @@ ssize_t cdata_write(struct file *filp, const char *buf, size_t size,
 	return 0;
 }
 
+ssize_t cdata_read(struct file *filp, char *buf, size_t size,
+			loff_t *off)
+{
+	MSG("Read.");
+	return 0;
+}
+
 int cdata_close(struct inode *inode, struct file *filp)
 {
 	MSG("Closed.");
@@ -60,6 +68,7 @@ static struct file_operations cdata_fops = {
 	open:		cdata_open,
 	release:	cdata_close,
 	write:		cdata_write,
+	read:		cdata_read,
 };
 
 int cdata_init_module(void)
@@ -68,12 +77,14 @@ int cdata_init_module(void)
 		MSG("Can't register device.");
 		return -1;
 	}
+	MSG("Module Initialize.");
 	return 0;
 }
 
 void cdata_cleanup_module(void)
 {
 	unregister_chrdev(DEV_MAJOR, DEV_NAME);
+	MSG("module Exit.");
 }
 
 module_init(cdata_init_module);
