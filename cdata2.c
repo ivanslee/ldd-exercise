@@ -1,5 +1,5 @@
 /*
- * =====================================================================================
+ i =====================================================================================
  *
  *       Filename:  cdata.c
  *
@@ -51,6 +51,13 @@ static int cdata_open(struct inode *inode, struct file *filp)
 ssize_t cdata_write(struct file *filp, const char *buf, size_t size, 
                       loff_t *off)
 {
+	int i;
+
+	for(i=0; i< 50000000; i++)
+	{
+		printk(KERN_INFO "WRITE():%d\n", i);
+		schedule();
+	}
 	MSG("Writed.");
 	return 0;
 }
